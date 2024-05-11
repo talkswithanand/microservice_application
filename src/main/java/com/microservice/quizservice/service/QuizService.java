@@ -12,6 +12,7 @@ import com.microservice.quizservice.dao.QuizDao;
 import com.microservice.quizservice.entity.QuestionWrapper;
 import com.microservice.quizservice.entity.Quiz;
 import com.microservice.quizservice.entity.Response;
+import com.microservice.quizservice.feign.QuizInterface;
 
 @Service
 public class QuizService {
@@ -19,16 +20,17 @@ public class QuizService {
 	@Autowired
 	QuizDao quizDao;
 
-//	@Autowired
-//	QuestionDao questionDao;
+	@Autowired
+	QuizInterface quizInterface;
 
 	public ResponseEntity<String> createQuiz(String category, int numQ, String title) {
-
-//		List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numQ);
-//		Quiz quiz = new Quiz();
-//		quiz.setTitle(title);
-//		quiz.setQuestions(questions);
-//		quizDao.save(quiz);
+		
+		List<Integer> questions = quizInterface.getQuestionsForQuiz(category, numQ).getBody();
+		Quiz quiz = new Quiz();
+		quiz.setTitle(title);
+		quiz.setQuestionIds(questions);
+		quizDao.save(quiz);
+		
 		return new ResponseEntity<String>("Created", HttpStatus.CREATED);
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class Quiz {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String title;
-	@ManyToMany
-	private List<Question> questions;
+	@ElementCollection
+	private List<Integer> questionIds;
 	
 }
